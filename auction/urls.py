@@ -4,5 +4,6 @@ from api import views
 
 urlpatterns = [
     # path('admin/', admin.site.urls),
-    path('login/',views.LoginView.as_view())
+    path('login/',views.LoginView.as_view()),
+    path('message/',views.MessageView.as_view()),
 ]
