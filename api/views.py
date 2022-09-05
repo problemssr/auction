@@ -105,6 +105,12 @@ class TopicView(ListAPIView):
 
 class NewsDetailModelSerializer(serializers.ModelSerializer):
     images = serializers.SerializerMethodField()
+    user = serializers.SerializerMethodField()
+    topic = serializers.SerializerMethodField()
+    create_date = serializers.DateTimeField(format="%Y-%m-%d")
+
+    viewer = serializers.SerializerMethodField()
+    comment = serializers.SerializerMethodField()
 
     class Meta:
         model = models.News
@@ -116,6 +122,21 @@ class NewsDetailModelSerializer(serializers.ModelSerializer):
         # return [row.cos_path for row in detail_queryset]
         # return [{'id':row.id,'path':row.cos_path} for row in detail_queryset]
         return [model_to_dict(row, ['id', 'cos_path']) for row in detail_queryset]
+
+    def get_user(self, obj):
+        print(obj.user)
+        return model_to_dict(obj.user, fields=['id', 'nickname', 'avatar'])
+
+    def get_topic(self, obj):
+        if not obj.topic:
+            return
+        return model_to_dict(obj.topic, fields=['id', 'title'])
+
+    def get_viewer(self, obj):
+        return 1
+
+    def get_comment(self, obj):
+        return 1
 
 
 class NewsDetailView(RetrieveAPIView):
